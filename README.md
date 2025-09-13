@@ -5,7 +5,7 @@
 
 예제 목록:
 
-- [할인 정책 계산기](#할인-정책-계산기)
+- [할인 정책 계산기](#discount-calculator)
 
 ---
 ### ⚙️ 기술 스택
@@ -15,7 +15,7 @@
 - **Test**: JUnit 5, AssertJ
 
 ---
-
+<a id="discount-calculator"></a>
 ## 📌 할인 정책 계산기
 
 ### 요구사항 (Specification)
