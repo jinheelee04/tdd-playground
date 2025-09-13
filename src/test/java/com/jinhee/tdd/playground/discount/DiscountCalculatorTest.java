@@ -49,9 +49,22 @@ public class DiscountCalculatorTest {
 
         DiscountCalculator cal = new DiscountCalculator();
         int discounted = cal.calculateDiscount(price, Membership.SILVER, reservationTime);
-        int expected = (int) (price * 0.90);
+        int expected = (int) (price * 0.9);
         assertEquals(expected, discounted);
     }
+
+    @Test
+    @DisplayName("Gold 회원이 10시 30분에 예약하면 할인율 20%")
+    void givenGoldMember_whenReserveAt10AM30MIN_thenApply10PercentDiscount() {
+        LocalTime reservationTime = LocalTime.of(10, 30);
+        int price = 10_000;
+
+        DiscountCalculator cal = new DiscountCalculator();
+        int discounted = cal.calculateDiscount(price, Membership.GOLD, reservationTime);
+        int expected = (int) (price * 0.8);
+        assertEquals(expected, discounted);
+    }
+
 
     @Test
     @DisplayName("BASIC 회원이 오전 6시 30분에 예약하면 할인율 5%")

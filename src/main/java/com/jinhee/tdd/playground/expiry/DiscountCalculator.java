@@ -7,6 +7,8 @@ public class DiscountCalculator {
         int discounted = price;
         if(membership == Membership.SILVER){
             discounted = (int) (price * 0.9);
+        }else if(membership == Membership.GOLD){
+            discounted = (int) (price * 0.8);
         }
         return discounted;
     }
