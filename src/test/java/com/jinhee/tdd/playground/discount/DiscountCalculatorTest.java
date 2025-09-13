@@ -27,7 +27,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * 1. BASIC 회원 + 10시 30분 예약 -> 할인율 없음
  * 2. SILVER 회원 + 10시 30분 예약 -> 10% 할인
  * 3. GOLD 회원 + 10시 30분 예약 -> 20% 할인
- * 2. BASIC 회원 + 6시 30분 예약 -> 5% 할인
+ * 4. BASIC 회원 + 6시 30분 예약 -> 5% 할인
+ * 5. BASIC 회원 + 21시 30분 예약 -> 5% 할인
+ * 6. SILVER 회원 + 6시 30분 예약 -> 10% + 5% 할인
+ * 7. SILVER 회원 + 21시 30분 예약 -> 10% + 5% 할인
+ * 8. GOLD 회원 + 6시 30분 예약 -> 20% + 5% 할인
+ * 9. GOLD 회원 + 21시 30분 예약 -> 20% + 5% 할인
  */
 public class DiscountCalculatorTest {
 
@@ -56,7 +61,7 @@ public class DiscountCalculatorTest {
 
     @Test
     @DisplayName("Gold 회원이 10시 30분에 예약하면 할인율 20%")
-    void givenGoldMember_whenReserveAt10AM30MIN_thenApply10PercentDiscount() {
+    void givenGoldMember_whenReserveAt10AM30MIN_thenApply20PercentDiscount() {
         LocalTime reservationTime = LocalTime.of(10, 30);
         int price = 10_000;
 
@@ -66,8 +71,6 @@ public class DiscountCalculatorTest {
         assertEquals(expected, discounted);
     }
 
-
-    @Disabled
     @Test
     @DisplayName("BASIC 회원이 오전 6시 30분에 예약하면 할인율 5%")
     void givenBasicMember_whenReserveAt7AM_thenApply5PercentDiscount() {
@@ -76,7 +79,7 @@ public class DiscountCalculatorTest {
 
         DiscountCalculator cal = new DiscountCalculator();
         int discounted = cal.calculateDiscount(price, Membership.BASIC, reservationTime);
-        int expected = (int) (price * 0.95);
+        int expected = (int) Math.round(price * 0.95);
         assertEquals(expected, discounted);
     }
 }
