@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalTime;
@@ -32,6 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * 4. BASIC 회원 + 6시 30분 예약 -> 5% 할인
  * 5. BASIC 회원 + 06:00 ~ 09:00 예약 -> 5% 할인
  * 6. BASIC 회원 + 오전 6시 예약 -> 5% 할인
+ * 7. BASIC 회원 + 오전 9시 예약 -> 할인율 없음
+ * 8. BASIC 회원 + 21:00 ~ 23:00 예약 -> 5% 할인
  */
 public class DiscountCalculatorTest {
 
@@ -82,7 +85,7 @@ public class DiscountCalculatorTest {
         assertEquals(expected, discounted);
     }
 
-    @DisplayName("BASIC 회원이 06시~09시 사이에 예약하면 5% 할인 적용")
+    @DisplayName("BASIC 회원이 06시~09시 사이(예:7시,8시)에 예약하면 5% 할인 적용")
     @ParameterizedTest
     @ValueSource(ints = {7, 8})
     void givenBasicMember_whenReserveAtMorningHours_thenApply5PercentDiscount(int hour) {
@@ -120,6 +123,27 @@ public class DiscountCalculatorTest {
         DiscountCalculator cal = new DiscountCalculator();
         int discounted = cal.calculateDiscount(price, Membership.BASIC, reservationTime);
         int expected = price;
+        assertEquals(expected, discounted);
+    }
+
+    @DisplayName("BASIC 회원이 야간(21:00~23:00) 예약 시 5% 할인 적용")
+    @ParameterizedTest
+    @CsvSource({
+            "21,0",
+            "22,30",
+            "22,59"
+    })
+    void givenBasicMember_whenReserveAtNightHours_thenApply5PercentDiscount(int hour, int min) {
+        // given
+        int price = 10000;
+        Membership membership = Membership.BASIC;
+        LocalTime time = LocalTime.of(hour, min);
+
+        // when
+        DiscountCalculator cal = new DiscountCalculator();
+        int discounted = cal.calculateDiscount(price, membership, time);
+        int expected = (int) Math.round(price * 0.95);
+        // then
         assertEquals(expected, discounted);
     }
 
