@@ -111,4 +111,16 @@ public class DiscountCalculatorTest {
         assertEquals(expected, discounted);
     }
 
+    @Test
+    @DisplayName("BASIC 회원이 오전 9시에 예약하면 할인율 없음")
+    void  givenBasicMember_whenReserveAt9AM_thenNoDiscount(){
+        LocalTime reservationTime = LocalTime.of(9, 00);
+        int price = 10_000;
+
+        DiscountCalculator cal = new DiscountCalculator();
+        int discounted = cal.calculateDiscount(price, Membership.BASIC, reservationTime);
+        int expected = price;
+        assertEquals(expected, discounted);
+    }
+
 }
