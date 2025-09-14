@@ -10,8 +10,8 @@
 ---
 ### ⚙️ 기술 스택
 - **Language**: Java 21
-- **Framework**: Spring Boot 3.x
-- **Build Tool**: Gradle (Kotlin DSL)
+- **Framework**: Spring Boot 3.2.5
+- **Build Tool**: Gradle
 - **Test**: JUnit 5, AssertJ
 
 ---
