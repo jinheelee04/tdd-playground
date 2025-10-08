@@ -7,13 +7,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.Mockito.verify;
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class) // Spring 컨텍스트 없이 Mock 주입 가능
 public class AuthCodeServiceTest {
     @Mock     // 의존 객체를 가짜로 만듦
     EmailSender emailSender;
 
+    @Mock
+    AuthCodeRepository authCodeRepository;
 
     @InjectMocks // Mock 객체를 주입해 실제 테스트 대상(Service 생성)
     AuthCodeService authCodeService;
@@ -27,5 +34,25 @@ public class AuthCodeServiceTest {
         authCodeService.sendAuthCode(email);
         // then : emailSender Mock의 sendVerificationEmail()이 딱 한 번 호출 됐는지 확인
         verify(emailSender).sendVerificationEmail(email);
+    }
+
+    @DisplayName("이전 발송 후 60초 이내 재요청 시 TooManyRequestsException 발생")
+    @Test
+    void should_throwException_when_resendRequestedWithinCooldown(){
+        LocalDateTime now = LocalDateTime.now();
+        String email = "test@test.co.kr";
+        AuthCode existing = AuthCode.builder()
+                .id(1L)
+                .email(email)
+                .code("12345")
+                .lastSentAt(now)
+                .build();
+        // 이미 발송 이력이 있는 것으로 Mock 설정
+        given(authCodeRepository.findByEmail(email))
+                .willReturn(Optional.of(existing));
+
+        assertThatThrownBy(()-> authCodeService.sendAuthCode(email))
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining(ErrorCode.TOO_MANY_REQUESTS.getMessage());
     }
 }
