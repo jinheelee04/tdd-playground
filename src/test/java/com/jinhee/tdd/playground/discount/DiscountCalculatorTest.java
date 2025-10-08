@@ -1,8 +1,5 @@
 package com.jinhee.tdd.playground.discount;
 
-import com.jinhee.tdd.playground.expiry.DiscountCalculator;
-import com.jinhee.tdd.playground.expiry.Membership;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

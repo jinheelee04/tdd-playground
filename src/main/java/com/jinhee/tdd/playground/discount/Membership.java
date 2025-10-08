@@ -1,4 +1,4 @@
-package com.jinhee.tdd.playground.expiry;
+package com.jinhee.tdd.playground.discount;
 
 public enum Membership {
     BASIC(0.0), SILVER(0.1), GOLD(0.2);

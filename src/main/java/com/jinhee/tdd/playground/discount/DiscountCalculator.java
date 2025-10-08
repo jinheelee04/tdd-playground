@@ -1,4 +1,4 @@
-package com.jinhee.tdd.playground.expiry;
+package com.jinhee.tdd.playground.discount;
 
 import java.time.LocalTime;
 
