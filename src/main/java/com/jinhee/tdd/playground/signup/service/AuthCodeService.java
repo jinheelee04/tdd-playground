@@ -21,6 +21,9 @@ public class AuthCodeService {
         if(authCode != null && authCode.isInCooldown()){
             throw new BusinessException(AuthCodeErrorCode.TOO_MANY_REQUESTS);
         }
+
+        authCodeRepository.save(AuthCode.issue(email, "12345"));
+
         try{
             emailSender.sendVerificationEmail(email);
         } catch (RuntimeException e){

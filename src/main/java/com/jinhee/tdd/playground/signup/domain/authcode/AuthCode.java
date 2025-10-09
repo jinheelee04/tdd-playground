@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @Table(name = "auth_code")
 public class AuthCode extends BaseEntity {
     private static final long COOLDOWN_SECONDS = 60L;  // 60초 재요청 제한
+    private static final long EXPIRATION_MINUTES = 5L; // 5분 유효시간
+    private static final int MAX_ATTEMPTS = 5;         // 최대 시도 횟수
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +34,7 @@ public class AuthCode extends BaseEntity {
 
     private int maxAttempts;
 
-    private LocalDateTime maxAttemptsAt;
+    private LocalDateTime lastAttemptsAt;
 
     private int resendCount;
 
@@ -40,6 +42,20 @@ public class AuthCode extends BaseEntity {
     private LocalDateTime lastSentAt;
 
     private boolean verified;
+
+    public static AuthCode issue(String email, String code) {
+        AuthCode authCode = new AuthCode();
+        authCode.email = email;
+        authCode.code = code;
+        authCode.expiresAt = LocalDateTime.now().plusMinutes(EXPIRATION_MINUTES);
+        authCode.attemptCount = 0;
+        authCode.maxAttempts = MAX_ATTEMPTS;
+        authCode.lastAttemptsAt = null;
+        authCode.resendCount = 0;
+        authCode.lastSentAt = LocalDateTime.now();
+        authCode.verified = false;
+        return authCode;
+    }
 
     // ========== 도메인 로직 ========== //
     /* 아직 쿨타임 중인지 확인 */
