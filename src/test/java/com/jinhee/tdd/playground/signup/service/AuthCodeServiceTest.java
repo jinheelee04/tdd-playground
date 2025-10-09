@@ -1,5 +1,9 @@
 package com.jinhee.tdd.playground.signup.service;
 
+import com.jinhee.tdd.playground.signup.entity.AuthCode;
+import com.jinhee.tdd.playground.signup.exception.BusinessException;
+import com.jinhee.tdd.playground.signup.exception.AuthCodeErrorCode;
+import com.jinhee.tdd.playground.signup.repository.AuthCodeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,6 +57,6 @@ public class AuthCodeServiceTest {
 
         assertThatThrownBy(()-> authCodeService.sendAuthCode(email))
                 .isInstanceOf(BusinessException.class)
-                .hasMessageContaining(ErrorCode.TOO_MANY_REQUESTS.getMessage());
+                .hasMessageContaining(AuthCodeErrorCode.TOO_MANY_REQUESTS.getMessage());
     }
 }
