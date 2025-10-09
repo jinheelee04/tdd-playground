@@ -7,6 +7,7 @@ import com.jinhee.tdd.playground.signup.domain.authcode.AuthCodeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,8 +16,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -72,5 +72,26 @@ public class AuthCodeServiceTest {
         assertThatThrownBy(()-> authCodeService.sendAuthCode(email))
                 .isInstanceOf(BusinessException.class)
                 .hasMessageContaining(AuthCodeErrorCode.EMAIL_SEND_FAILED.getMessage());
+    }
+
+    @DisplayName("처음 요청 시 새 AuthCode 생성 및 저장 성공")
+    @Test
+    void should_saveAuthCode_when_firstRequest(){
+        String email = "test@test.co.kr";
+        given(authCodeRepository.findByEmail(email)).willReturn(Optional.empty());
+
+        authCodeService.sendAuthCode(email);
+
+        ArgumentCaptor<AuthCode> captor = ArgumentCaptor.forClass(AuthCode.class);
+        then(authCodeRepository).should().save(captor.capture());
+        AuthCode authCode = captor.getValue();
+
+        assertThat(authCode).isNotNull();
+        assertThat(authCode.getEmail()).isEqualTo(email);
+        assertThat(authCode.getAttemptCount()).isZero();
+        assertThat(authCode.getCode()).isNotNull();
+        assertThat(authCode.getLastSentAt()).isNotNull();
+
+        verify(emailSender).sendVerificationEmail(email);
     }
 }
