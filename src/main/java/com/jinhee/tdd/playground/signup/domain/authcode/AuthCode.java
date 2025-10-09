@@ -1,6 +1,6 @@
-package com.jinhee.tdd.playground.signup.entity;
+package com.jinhee.tdd.playground.signup.domain.authcode;
 
-import com.jinhee.tdd.playground.signup.audit.BaseEntity;
+import com.jinhee.tdd.playground.signup.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

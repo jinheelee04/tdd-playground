@@ -1,9 +1,9 @@
 package com.jinhee.tdd.playground.signup.service;
 
-import com.jinhee.tdd.playground.signup.entity.AuthCode;
+import com.jinhee.tdd.playground.signup.domain.authcode.AuthCode;
 import com.jinhee.tdd.playground.signup.exception.BusinessException;
-import com.jinhee.tdd.playground.signup.exception.AuthCodeErrorCode;
-import com.jinhee.tdd.playground.signup.repository.AuthCodeRepository;
+import com.jinhee.tdd.playground.signup.domain.authcode.AuthCodeErrorCode;
+import com.jinhee.tdd.playground.signup.domain.authcode.AuthCodeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,10 +1,9 @@
 package com.jinhee.tdd.playground.signup.service;
 
-import com.jinhee.tdd.playground.signup.entity.AuthCode;
-import com.jinhee.tdd.playground.signup.exception.AuthCodeErrorCode;
+import com.jinhee.tdd.playground.signup.domain.authcode.AuthCode;
+import com.jinhee.tdd.playground.signup.domain.authcode.AuthCodeErrorCode;
 import com.jinhee.tdd.playground.signup.exception.BusinessException;
-import com.jinhee.tdd.playground.signup.exception.ErrorCode;
-import com.jinhee.tdd.playground.signup.repository.AuthCodeRepository;
+import com.jinhee.tdd.playground.signup.domain.authcode.AuthCodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

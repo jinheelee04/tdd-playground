@@ -1,6 +1,6 @@
 package com.jinhee.tdd.playground.signup.exception;
 
-import com.jinhee.tdd.playground.signup.dto.ApiResponse;
+import com.jinhee.tdd.playground.signup.api.common.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

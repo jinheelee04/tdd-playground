@@ -1,4 +1,4 @@
-package com.jinhee.tdd.playground.signup.audit;
+package com.jinhee.tdd.playground.signup.domain.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

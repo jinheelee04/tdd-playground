@@ -1,6 +1,5 @@
-package com.jinhee.tdd.playground.signup.repository;
+package com.jinhee.tdd.playground.signup.domain.authcode;
 
-import com.jinhee.tdd.playground.signup.entity.AuthCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

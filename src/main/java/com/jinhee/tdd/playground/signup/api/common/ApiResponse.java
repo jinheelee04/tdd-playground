@@ -1,4 +1,4 @@
-package com.jinhee.tdd.playground.signup.dto;
+package com.jinhee.tdd.playground.signup.api.common;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
