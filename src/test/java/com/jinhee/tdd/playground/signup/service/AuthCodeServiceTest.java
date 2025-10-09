@@ -14,7 +14,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -58,5 +60,17 @@ public class AuthCodeServiceTest {
         assertThatThrownBy(()-> authCodeService.sendAuthCode(email))
                 .isInstanceOf(BusinessException.class)
                 .hasMessageContaining(AuthCodeErrorCode.TOO_MANY_REQUESTS.getMessage());
+    }
+
+    @DisplayName("이메일 발송 실패 시 EmailSendFailedException 발생")
+    @Test
+    void should_throwException_when_emailSendFails(){
+        String email = "test@test.co.kr";
+        willThrow(new RuntimeException("SMTP Error"))
+                .given(emailSender).sendVerificationEmail(email);
+
+        assertThatThrownBy(()-> authCodeService.sendAuthCode(email))
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining(AuthCodeErrorCode.EMAIL_SEND_FAILED.getMessage());
     }
 }
