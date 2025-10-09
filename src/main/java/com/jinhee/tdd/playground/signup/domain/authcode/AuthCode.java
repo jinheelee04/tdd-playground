@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 @Builder
 @Table(name = "auth_code")
 public class AuthCode extends BaseEntity {
+    private static final long COOLDOWN_SECONDS = 60L;  // 60초 재요청 제한
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private Long id;
 
     @Column(nullable = false)
@@ -40,5 +40,13 @@ public class AuthCode extends BaseEntity {
     private LocalDateTime lastSentAt;
 
     private boolean verified;
+
+    // ========== 도메인 로직 ========== //
+    /* 아직 쿨타임 중인지 확인 */
+    public boolean isInCooldown(){
+        if(lastSentAt == null) return false;
+        return lastSentAt.plusSeconds(COOLDOWN_SECONDS)
+                        .isAfter(LocalDateTime.now());
+    }
 
 }

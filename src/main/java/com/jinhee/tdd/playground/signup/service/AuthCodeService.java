@@ -7,8 +7,6 @@ import com.jinhee.tdd.playground.signup.domain.authcode.AuthCodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 @RequiredArgsConstructor
 public class AuthCodeService {
@@ -19,9 +17,8 @@ public class AuthCodeService {
     public void sendAuthCode(String email) {
         AuthCode authCode = authCodeRepository.findByEmail(email).orElse(null);
 
-        // 마지막 요청 시간이 60초 이내인 경우 예외 발생
-        if(authCode != null && authCode.getLastSentAt() != null
-            && authCode.getLastSentAt().plusSeconds(60).isAfter(LocalDateTime.now())){
+        // 재요청이 60초 이내인 경우 예외 발생
+        if(authCode != null && authCode.isInCooldown()){
             throw new BusinessException(AuthCodeErrorCode.TOO_MANY_REQUESTS);
         }
 
