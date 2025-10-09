@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum AuthCodeErrorCode implements ErrorCode {
     TOO_MANY_REQUESTS(HttpStatus.TOO_MANY_REQUESTS, "AC0001", "60초 이내 재요청은 불가능합니다." ),
+    EMAIL_SEND_FAILED(HttpStatus.SERVICE_UNAVAILABLE , "AC0002", "이메일 발송에 실패했습니다. 관리자에게 문의하세요." ),
 
     ;
 
